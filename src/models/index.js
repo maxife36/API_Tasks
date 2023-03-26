@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 const tasksFactory = require("./Tasks.js");
 
 const sequelize = new Sequelize(
-  "postgres://postgres:28.04*92@localhost:5432/tasks",
+  "postgres://{User}:{password}@{host}/{db}",
   { logging: false }
 );
 
