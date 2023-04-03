@@ -1,7 +1,7 @@
 const { Tasks } = require("../models/index");
 const validator = require("validator");
 
-//CONTASTES DE ERRORES
+//CONSTANTES DE ERRORES
 const taskErrorNotFound = new Error("task not found");
 
 //--------------------------------------------------------------------

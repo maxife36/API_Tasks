@@ -1,8 +1,15 @@
 const { Sequelize } = require("sequelize");
 const tasksFactory = require("./Tasks.js");
 
+//-------Acces Parameters-------
+let user = ""
+let password = ""
+let host =  ""
+let dataBase = ""
+
+
 const sequelize = new Sequelize(
-  "postgres://{User}:{password}@{host}/{db}",
+  `postgres://${user}:${password}@${host}/${dataBase}`,
   { logging: false }
 );
 

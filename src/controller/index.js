@@ -1,6 +1,6 @@
 const { Tasks } = require("../models/index");
 const validator = require("validator");
-const db_contr = require("../controller_Data_Bases/index")
+const db_contr = require("../controller_Data_Bases/index");
 
 let allTasks = async (req, res) => {
   try {
@@ -12,35 +12,30 @@ let allTasks = async (req, res) => {
 
 let createNewTask = async (req, res) => {
   try {
-    let { task_name, category, start, finish, description, status } = req.body;
+    let allTasks = req.body;
+    console.log(allTasks);
 
-    if (!task_name || !category || !start)
-      throw new Error("Faltan datos obligatorios");
+    // if (!task_name || !category || !start)
+    //   throw new Error("Faltan datos obligatorios");
 
-    const task = await Tasks.create({
-      task_name,
-      category,
-      start,
-      finish,
-      description,
-      status,
-    });
+    await Tasks.bulkCreate(allTasks);
 
-    res.status(200).send("Se creo la tarea con EXITO");
+    res.status(200).send("Se crearon las tareas con EXITO");
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).send(err.message);
   }
 };
 
 let searchByPk = async (req, res) => {
   try {
     let id_searched = req.params.id;
-    
+
     let task = await db_contr.getTaskByID(id_searched);
 
     res.status(200).send(task);
   } catch (err) {
-    if (err === db_contr.taskErrorNotFound) return res.status(404).send(err.message);
+    if (err === db_contr.taskErrorNotFound)
+      return res.status(404).send(err.message);
     res.status(400).send(err.message);
   }
 };
@@ -53,7 +48,8 @@ let searchByCategory = async (req, res) => {
 
     res.status(200).send(task);
   } catch (err) {
-    if(err.message === "Category Not Found") return res.status(404).send(err.message);
+    if (err.message === "Category Not Found")
+      return res.status(404).send(err.message);
     res.status(400).send(err.message);
   }
 };
@@ -64,22 +60,23 @@ let updateTask = async (req, res) => {
 
     res.status(200).send(task);
   } catch (err) {
-    if (err === db_contr.taskErrorNotFound) return res.status(404).send(err.message);
+    if (err === db_contr.taskErrorNotFound)
+      return res.status(404).send(err.message);
     res.status(400).send(err.message);
   }
 };
 
-let destroyByPk = async (req, res) =>{
+let destroyByPk = async (req, res) => {
   try {
-    let destroyId = req.query.id
+    let destroyId = req.query.id;
 
     let status = await db_contr.deleteById(destroyId);
 
     if (status) return res.status(200).send("Task deleted successfully");
     throw db_contr.taskErrorNotFound;
-
   } catch (err) {
-    if (err === db_contr.taskErrorNotFound) return res.status(404).send(err.message);
+    if (err === db_contr.taskErrorNotFound)
+      return res.status(404).send(err.message);
     res.status(400).send(err.message);
   }
 };
@@ -90,5 +87,5 @@ module.exports = {
   searchByPk,
   searchByCategory,
   updateTask,
-  destroyByPk
+  destroyByPk,
 };
